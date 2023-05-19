@@ -23,7 +23,7 @@ exports.attendace_create = async (request, response, next) => {
     if (!fetchSabh) {
       response.status(500).send({
         error: true,
-        message: "Plese select valid sabha",
+        message: "Please select valid sabha.",
       });
     }
     // Check attendance is available for that day or not

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const Mandal = require("../models/mandal");
-// const { response } = require("../../app");
+
 const checkAuth = require("../middleware/check-auth");
 const MandalController = require("../controllers/mandal");
 router.get("/", checkAuth, MandalController.Mandal_get_all);

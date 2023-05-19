@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 exports.bhoolku_get_all = async (request, response, next) => {
   try {
+    console.log(request.query);
     const responseponse = await Bhoolku.find(request.query, {
       name: 1,
       phone: 1,
@@ -10,7 +11,7 @@ exports.bhoolku_get_all = async (request, response, next) => {
     } );
     response.send(responseponse);
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };
 

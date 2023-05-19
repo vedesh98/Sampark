@@ -59,12 +59,36 @@ exports.GET_BIRTHDAY_LIST_MONTH = async (request, response, next) => {
 
 exports.GET_BIRTHDAY_RANGE = async (request, response, next) => {
   try {
-    const fetchBhoolku = await Bhoolku.find(request.query.query, {
-      name: 1,
-      phone: 1,
-      category: 1,
-    });
-    response.send(responseponse);
+    // const date = new Date(request.body.date || Date.now());
+    const fromDate = new Date(request.query.dateOfbirth.gte);
+    const toDate = new Date(request.query.dateOfbirth.lte);
+    const fromDay = fromDate.getDate();
+    const fromMonth = fromDate.getMonth() + 1;
+    const toDay = toDate.getDate();
+    const toMonth = toDate.getMonth() + 1;
+
+    const fetchBhoolku = await Bhoolku.aggregate([
+      {
+        $project: {
+          month: {
+            $month: "$dateOfbirth",
+          },
+          day: {
+            $dayOfMonth: "$dateOfbirth",
+          },
+          name: "$name",
+          phone: "$phone",
+          date: "$dateOfbirth",
+        },
+      },
+      {
+        $match: {
+          month: { $lte: toMonth, $gte: fromMonth },
+          day: { $lte: toDay, $gte: fromDay },
+        },
+      },
+    ]);
+    response.status(200).send(fetchBhoolku);
   } catch (error) {
     throw error;
   }
