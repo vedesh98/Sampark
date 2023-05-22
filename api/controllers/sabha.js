@@ -1,4 +1,3 @@
-// const { request, response } = require("express");
 const mongoose = require("mongoose");
 const Sabha = require("../models/sabha");
 
@@ -7,7 +6,7 @@ exports.sabha_get = async (request, response, next) => {
     const fetchSabha = await Sabha.find(request.query);
     response.status(200).send(fetchSabha);
   } catch (error) {
-    throw error;
+    throw error.messageS;
   }
 };
 
@@ -35,7 +34,7 @@ exports.sabha_cteate = async (request, response, next) => {
       response.status(201).send(creatSabha);
     }
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };
 
@@ -45,7 +44,22 @@ exports.sabha_get_single = async (request, response, next) => {
     const fetchSabha = await Sabha.findById(sabhaId);
     response.status(200).send(fetchSabha);
   } catch (error) {
-    throw error;
+    throw error.message;
+  }
+};
+
+exports.sabha_update = async (request, response, next) => {
+  try {
+    const { sabhaId } = request.params;
+    request.body.changedBy = request.userData.userId;
+    request.body.changedAt = Date.now();
+    const updatesabha = await Sabha.updateOne(
+      { _id: sabhaId },
+      { $set: request.body }
+    );
+    response.status(200).send(updatesabha);
+  } catch (error) {
+    throw error.message;
   }
 };
 
@@ -65,6 +79,6 @@ exports.sabha_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };

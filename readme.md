@@ -14,7 +14,7 @@
 
 **This API is also able to provide birthday bhoolku list for a Date/Month/Range of dates(Basically use to fetch weekly list).**
 
-### How to run the server locally?
+### How to run the server locally ?
 
 `1. software requirements to run locally`
 

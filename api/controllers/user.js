@@ -27,7 +27,7 @@ exports.Users_signup = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };
 
@@ -71,7 +71,7 @@ exports.User_login = async (request, response, next) => {
       );
     }
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };
 
@@ -91,6 +91,6 @@ exports.User_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    throw error.message;
   }
 };
