@@ -10,14 +10,22 @@ const bhoolkuSchema = mongoose.Schema({
     enum: ["Balyuvak", "Yuvak", "Yuvati", "Balika"],
     require: true,
   },
-  baseSabha: { type: mongoose.SchemaTypes.ObjectId, required: false },
+  baseSabha: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Sabha",
+    required: false,
+  },
   referanceBhoolku: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Bhoolku",
     required: false,
   },
   createdAt: { type: Date, default: () => Date.now(), immutable: true },
-  createdBy: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+  createdBy: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User",
+    default: process.env.USER,
+  },
 });
 
 module.exports = mongoose.model("Bhoolku", bhoolkuSchema);

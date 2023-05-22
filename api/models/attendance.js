@@ -15,7 +15,11 @@ const attendanceSchema = mongoose.Schema({
     ref: "Bhoolku",
   },
   createdAt: { type: Date, default: () => Date.now(), immutable: true },
-  createdBy: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
+  createdBy: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User",
+    default: process.env.USER,
+  },
 });
 
 module.exports = mongoose.model("Attendanse", attendanceSchema);

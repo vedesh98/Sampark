@@ -5,6 +5,11 @@ const mandalSchema = mongoose.Schema({
   name: { type: String, required: true },
   mandalLeaders: { type: [mongoose.SchemaTypes.ObjectId], required: false },
   createdAt: { type: Date, default: () => Date.now(), immutable: true },
+  createdBy: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User",
+    default: process.env.USER,
+  },
 });
 
 module.exports = mongoose.model("Mandal", mandalSchema);
