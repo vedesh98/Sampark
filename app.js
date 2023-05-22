@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const cors = require("cors");
-require('dotenv').config();
+require("dotenv").config();
+const common = require("./common");
 const bhoolkuRoutes = require("./api/routes/bhoolkus");
 const attendanceRoutes = require("./api/routes/attendance");
 const userRoutes = require("./api/routes/user");
@@ -10,11 +10,9 @@ const mandalRoutes = require("./api/routes/mandals");
 const sabhRoutes = require("./api/routes/sabha");
 const birthdayBhoolkus = require("./api/routes/birthdayBhoolkus");
 
-mongoose.connect(
-  "mongodb+srv://node-shop:" +
-    process.env.MONGO_ATLAS_PW +
-    "@cluster0.nytnbkv.mongodb.net/test"
-);
+
+
+common.mongooseConnection();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
