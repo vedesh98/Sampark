@@ -40,6 +40,7 @@ exports.attendace_create = async (request, response, next) => {
         sabha: request.body.sabh,
         attendees: request.body.attendees,
         non_attendees: request.body.non_attendees,
+        createdBy: request.userData.userId,
       });
       response.status(201).send(createdAttendance);
     }
@@ -73,6 +74,8 @@ exports.attendace_get = async (request, response, next) => {
 exports.attendace_update = async (request, response, next) => {
   try {
     const { attendanceId } = request.params;
+    request.body.changedBy = request.userData.userId;
+    request.body.changedAt = Date.now();
     const updateBhoolku = await Attendance.updateOne(
       { _id: attendanceId },
       { $set: request.body }

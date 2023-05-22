@@ -31,6 +31,7 @@ exports.bhoolku_create = async (request, response, next) => {
         dateOfbirth: request.body.dateOfbirth,
         category: request.body.category,
         referanceBhoolku: request.body.referanceBhoolku,
+        createdBy: request.userData.userId,
       });
 
       response.status(201).send(createdbhoolku);
@@ -55,6 +56,8 @@ exports.bhoolku_get_bhoolku = async (request, response, next) => {
 exports.bhoolku_update = async (request, response, next) => {
   try {
     const { bhoolkuId } = request.params;
+    request.body.changedBy = request.userData.userId;
+    request.body.changedAt = Date.now();
     const updateBhoolku = await Bhoolku.updateOne(
       { _id: bhoolkuId },
       { $set: request.body }

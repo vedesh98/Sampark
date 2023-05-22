@@ -22,8 +22,6 @@ exports.Users_signup = async (request, response, next) => {
             email: request.body.email,
             password: hash,
           });
-
-          process.env.USER = userCreated.email;
           response.status(500).send(userCreated);
         }
       });
@@ -63,7 +61,6 @@ exports.User_login = async (request, response, next) => {
                 expiresIn: "24hr",
               }
             );
-            process.env.USER = fetchuser.email;
             response.status(200).send({
               error: false,
               message: `Auth Successful`,

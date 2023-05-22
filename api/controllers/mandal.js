@@ -19,6 +19,7 @@ exports.Mandal_create = async (request, response, next) => {
       const createMandal = await Mandal.create({
         _id: new mongoose.Types.ObjectId(),
         name: request.body.name,
+        createdBy: request.userData.userId,
       });
 
       response.status(201).send(createMandal);
@@ -41,6 +42,8 @@ exports.Mandal_get = async (request, res, next) => {
 exports.Mandal_update = async (request, response, next) => {
   try {
     const { mandalId } = request.params;
+    request.body.changedBy = request.userData.userId;
+    request.body.changedAt = Date.now();
     const updatemandal = await Mandal.updateOne(
       { _id: mandalId },
       { $set: request.body }

@@ -14,7 +14,12 @@ const sabhaSchema = mongoose.Schema({
   createdBy: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
-    default: process.env.USER,
+    immutable: true,
+  },
+  changedAt: { type: Date },
+  changedBy: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User"
   },
 });
 

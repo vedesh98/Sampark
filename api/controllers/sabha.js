@@ -29,6 +29,7 @@ exports.sabha_cteate = async (request, response, next) => {
         mandalName: request.body.mandalName,
         category: request.body.category,
         sabhaName: request.body.sabhaName,
+        createdBy: request.userData.userId,
       });
 
       response.status(201).send(creatSabha);
