@@ -22,16 +22,14 @@
 
 > `MongoDB Compass for offline or MongoDB Atlass to save online`
 
-> `Visula studio code`
+> `Visual studio code`
 
 `2. Create a .env file with following variables`
-
-> `PORT=3000`
-
-> `URL=<url of Mongodb compass or Atlas>`
-
-> `PRIVATEKEY =<some_key>`
-
+```
+PORT=3000
+URL=<url of Mongodb compass or Atlas>
+PRIVATEKEY=<some_key>
+```
 `3. run npm install`
 
 `4. run npm start`

@@ -2,6 +2,7 @@ const Bhoolku = require("../models/bhoolku");
 const mongoose = require("mongoose");
 const Attendance = require("../models/attendance");
 const Sabha = require("../models/sabha");
+const common = require("../../common");
 
 exports.attendace_get_all = async (request, response, next) => {
   try {
@@ -51,7 +52,7 @@ exports.attendace_create = async (request, response, next) => {
 
 exports.attendace_get = async (request, response, next) => {
   try {
-    //fetch attendance by date and mandal name
+    //fetch attendance by Addtendace ID
     const { attendanceId } = request.params;
 
     const fetchAttendance = await Attendance.findById(attendanceId, {
@@ -101,6 +102,28 @@ exports.attendance_delete = async (request, response, next) => {
         message: `Attendance with ID ${attendanceId} not found.`,
       });
     }
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.attendace_sheet = async (request, response, next) => {
+  try {
+    const { attendanceId } = request.params;
+
+    const fetchList = await Attendance.findById(attendanceId, {
+      attendees: 1,
+      non_attendees: 1,
+      date: 1,
+    })
+      .populate("attendees non_attendees")
+      .select("name phone");
+    const timeStamp = fetchList.date
+      .toISOString()
+      .split("T")[0]
+      .replaceAll("-", "");
+    common.createFile(fetchList.attendees, "attendees" + timeStamp);
+    common.createFile(fetchList.non_attendees, "non_attendees" + timeStamp);
   } catch (error) {
     throw error;
   }
