@@ -41,7 +41,7 @@ exports.attendace_create = async (request, response, next) => {
         sabha: request.body.sabh,
         attendees: request.body.attendees,
         non_attendees: request.body.non_attendees,
-        createdBy: request.userData.userId,
+        // createdBy: request.userData.userId,
       });
       response.status(201).send(createdAttendance);
     }
@@ -126,5 +126,68 @@ exports.attendace_sheet = async (request, response, next) => {
     common.createFile(fetchList.non_attendees, "non_attendees" + timeStamp);
   } catch (error) {
     throw error;
+  }
+};
+
+exports.followup = async (request, response, next) => {
+  try {
+    const { attendanceId } = request.params;
+    const fetchFollowup = await Attendance.findById(attendanceId, {
+      _id: 0,
+      non_attendees: 1,
+    }).populate("non_attendees", {
+      _id: 0,
+      name: 1,
+      phone: 1,
+      referanceBhoolku: 1,
+      followupBhoolku: 1,
+    });
+
+    const followupListKK = fetchFollowup.non_attendees.reduce(
+      (result, follow) => {
+        let followUpId;
+        if (follow.followupBhoolku) {
+          followUpId = follow.followupBhoolku;
+        } else {
+          followUpId = follow.referanceBhoolku;
+        }
+        if (!result[followUpId]) {
+          result[followUpId] = [
+            { name: follow.name, phone: follow.phone },
+          ];
+        } else {
+          result[followUpId].push({
+            name: follow.name,
+            phone: follow.phone,
+          });
+        }
+        return result;
+      },
+      {}
+    );
+
+    const followupKK = await Bhoolku.find(
+      {
+        _id: { $in: Object.keys(followupListKK) },
+      },
+      {
+        name: 1,
+        phone: 1,
+      }
+    );
+    let finalList = [];
+    for (const KkInfo of followupKK) {
+      finalList.push({
+        KkInfo: {
+          name: KkInfo.name,
+          phone: KkInfo.phone,
+        },
+        FolloUpList: followupListKK[KkInfo._id],
+      });
+    }
+
+    response.status(200).send(finalList);
+  } catch (error) {
+    throw error.message;
   }
 };

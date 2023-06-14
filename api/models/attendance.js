@@ -4,6 +4,8 @@ const attendanceSchema = mongoose.Schema({
   _id: mongoose.SchemaTypes.ObjectId,
   date: { type: Date, required: true },
   sabha: { type: mongoose.SchemaTypes.ObjectId, require: true },
+  vakta: { type: mongoose.SchemaTypes.ObjectId },
+  topic: { type: String },
   attendees: {
     type: [mongoose.SchemaTypes.ObjectId],
     required: true,
@@ -23,7 +25,7 @@ const attendanceSchema = mongoose.Schema({
   changedAt: { type: Date },
   changedBy: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "User"
+    ref: "User",
   },
 });
 

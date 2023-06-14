@@ -19,7 +19,9 @@ router.patch(
   AttendanceController.attendace_update
 );
 
-router.get("/sheet/:attendanceId",AttendanceController.attendace_sheet);
+router.get("/sheet/:attendanceId", AttendanceController.attendace_sheet);
+
+router.get("/followup/:attendanceId", AttendanceController.followup);
 
 // Delete Attendace using attendance ID
 router.delete(

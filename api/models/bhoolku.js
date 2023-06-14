@@ -23,7 +23,7 @@ const bhoolkuSchema = mongoose.Schema({
   referanceBhoolku: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Bhoolku",
-    required: false,
+    required: true,
   },
   followupBhoolku: {
     type: mongoose.SchemaTypes.ObjectId,
