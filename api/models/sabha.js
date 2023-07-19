@@ -16,7 +16,7 @@ const sabhaSchema = mongoose.Schema({
     ref: "User",
     immutable: true,
   },
-  changedAt: { type: Date },
+  changedAt: { type: Date, default: () => Date.now() },
   changedBy: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User"

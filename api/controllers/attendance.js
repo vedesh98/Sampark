@@ -4,6 +4,7 @@ const Attendance = require("../models/attendance");
 const Sabha = require("../models/sabha");
 const common = require("../../common");
 
+//Fetch attendance list using query which
 exports.attendace_get_all = async (request, response, next) => {
   try {
     const fetchAttendance = await Attendance.find(request.query, {
@@ -17,6 +18,7 @@ exports.attendace_get_all = async (request, response, next) => {
   }
 };
 
+//Create new attendance for sabha
 exports.attendace_create = async (request, response, next) => {
   try {
     const fetchSabh = await Sabha.findById(request.body.sabha);
@@ -41,7 +43,7 @@ exports.attendace_create = async (request, response, next) => {
         sabha: request.body.sabh,
         attendees: request.body.attendees,
         non_attendees: request.body.non_attendees,
-        // createdBy: request.userData.userId,
+        createdBy: request.body.userId,
       });
       response.status(201).send(createdAttendance);
     }
@@ -50,9 +52,9 @@ exports.attendace_create = async (request, response, next) => {
   }
 };
 
+//Fetch attendance by Addtendace ID
 exports.attendace_get = async (request, response, next) => {
   try {
-    //fetch attendance by Addtendace ID
     const { attendanceId } = request.params;
 
     const fetchAttendance = await Attendance.findById(attendanceId, {
@@ -72,11 +74,11 @@ exports.attendace_get = async (request, response, next) => {
   }
 };
 
+//Update Attendance
 exports.attendace_update = async (request, response, next) => {
   try {
     const { attendanceId } = request.params;
     request.body.changedBy = request.userData.userId;
-    request.body.changedAt = Date.now();
     const updateBhoolku = await Attendance.updateOne(
       { _id: attendanceId },
       { $set: request.body }
@@ -87,6 +89,7 @@ exports.attendace_update = async (request, response, next) => {
   }
 };
 
+//Delete Attendance of sabha
 exports.attendance_delete = async (request, response, next) => {
   try {
     const { attendanceId } = request.params;
@@ -107,6 +110,7 @@ exports.attendance_delete = async (request, response, next) => {
   }
 };
 
+// Download Sabha list in excel
 exports.attendace_sheet = async (request, response, next) => {
   try {
     const { attendanceId } = request.params;
@@ -129,6 +133,7 @@ exports.attendace_sheet = async (request, response, next) => {
   }
 };
 
+//Fetch followup list for karyakarta of non-attendees
 exports.followup = async (request, response, next) => {
   try {
     const { attendanceId } = request.params;
@@ -145,16 +150,9 @@ exports.followup = async (request, response, next) => {
 
     const followupListKK = fetchFollowup.non_attendees.reduce(
       (result, follow) => {
-        let followUpId;
-        if (follow.followupBhoolku) {
-          followUpId = follow.followupBhoolku;
-        } else {
-          followUpId = follow.referanceBhoolku;
-        }
+        const followUpId = follow.followupBhoolku || follow.referanceBhoolku;
         if (!result[followUpId]) {
-          result[followUpId] = [
-            { name: follow.name, phone: follow.phone },
-          ];
+          result[followUpId] = [{ name: follow.name, phone: follow.phone }];
         } else {
           result[followUpId].push({
             name: follow.name,

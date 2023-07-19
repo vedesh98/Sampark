@@ -20,6 +20,8 @@ exports.Users_signup = async (request, response, next) => {
           const userCreated = await User.create({
             _id: new mongoose.Types.ObjectId(),
             email: request.body.email,
+            userBhoolku: request.body.userBhoolku,
+            accessLevel: request.body.accessLevel,
             password: hash,
           });
           response.status(500).send(userCreated);
@@ -27,7 +29,7 @@ exports.Users_signup = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 };
 
@@ -71,7 +73,7 @@ exports.User_login = async (request, response, next) => {
       );
     }
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 };
 
@@ -91,6 +93,6 @@ exports.User_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 };

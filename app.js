@@ -10,13 +10,11 @@ const mandalRoutes = require("./api/routes/mandals");
 const sabhRoutes = require("./api/routes/sabha");
 const birthdayBhoolkus = require("./api/routes/birthdayBhoolkus");
 
-
-
 common.mongooseConnection();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(cors()); 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin','*');
 //     res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, content-Type, Accept, Authorization'
@@ -28,8 +26,6 @@ app.use(express.urlencoded({ extended: false }));
 //     next();
 // })
 
-app.use(cors()); //imp
-
 app.use("/bhoolkus", bhoolkuRoutes);
 app.use("/attendance", attendanceRoutes);
 app.use("/user", userRoutes);
@@ -37,17 +33,6 @@ app.use("/sabha", sabhRoutes);
 app.use("/mandals", mandalRoutes);
 app.use("/birthdayBhoolkus", birthdayBhoolkus);
 
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
-});
-app.use((error, req, res, next) => {
-  res.status(error.staus || 500).send({
-    error: {
-      message: error.message,
-    },
-  });
-});
+app.use(common.ErrorHandlling, common.ErrorMessageHandller);
 
 module.exports = app;

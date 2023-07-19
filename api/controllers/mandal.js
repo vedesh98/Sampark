@@ -43,7 +43,6 @@ exports.Mandal_update = async (request, response, next) => {
   try {
     const { mandalId } = request.params;
     request.body.changedBy = request.userData.userId;
-    request.body.changedAt = Date.now();
     const updatemandal = await Mandal.updateOne(
       { _id: mandalId },
       { $set: request.body }
