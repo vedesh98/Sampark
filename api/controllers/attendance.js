@@ -1,5 +1,4 @@
 const Bhoolku = require("../models/bhoolku");
-const mongoose = require("mongoose");
 const Attendance = require("../models/attendance");
 const Sabha = require("../models/sabha");
 const common = require("../../common");
@@ -14,7 +13,7 @@ exports.attendace_get_all = async (request, response, next) => {
     });
     response.send(fetchAttendance);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -38,7 +37,6 @@ exports.attendace_create = async (request, response, next) => {
       response.status(500).send(fetchAttendance);
     } else {
       const createdAttendance = await Attendance.create({
-        _id: new mongoose.Types.ObjectId(),
         date: request.body.date,
         sabha: request.body.sabh,
         attendees: request.body.attendees,
@@ -48,7 +46,7 @@ exports.attendace_create = async (request, response, next) => {
       response.status(201).send(createdAttendance);
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -70,7 +68,7 @@ exports.attendace_get = async (request, response, next) => {
       }),
     });
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -85,7 +83,7 @@ exports.attendace_update = async (request, response, next) => {
     ).select("date attendees");
     response.status(200).send(updateBhoolku);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -106,7 +104,7 @@ exports.attendance_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -129,7 +127,7 @@ exports.attendace_sheet = async (request, response, next) => {
     common.createFile(fetchList.attendees, "attendees" + timeStamp);
     common.createFile(fetchList.non_attendees, "non_attendees" + timeStamp);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -186,6 +184,6 @@ exports.followup = async (request, response, next) => {
 
     response.status(200).send(finalList);
   } catch (error) {
-    throw error.message;
+    next(error)
   }
 };
