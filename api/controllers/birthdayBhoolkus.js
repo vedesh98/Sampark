@@ -29,7 +29,7 @@ exports.GET_BIRTHDAY_LIST_DAY = async (request, response, next) => {
     ]);
     response.status(200).send(fetchBhoolku); //map((bhoolku) => (bhoolku.age = bhoolku.age))
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
@@ -63,7 +63,7 @@ exports.GET_BIRTHDAY_LIST_MONTH = async (request, response, next) => {
       })
     );
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
@@ -99,6 +99,6 @@ exports.GET_BIRTHDAY_RANGE = async (request, response, next) => {
     ]);
     response.status(200).send(fetchBhoolku);
   } catch (error) {
-    throw error;
+    next(error);
   }
 };

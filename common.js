@@ -19,6 +19,24 @@ exports.createFile = (dataForFile, fileName) => {
   });
 };
 
+exports.readDataFromFile = (fileName = 'members.xls') => {
+  let XLSX = require("xlsx");
+  let workbook = XLSX.readFile(fileName);
+  let sheet_name_list = workbook.SheetNames;
+  let xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+  return xlData.map((bhoolu) => {
+    return {  
+      name: `${bhoolu['First Name']} ${bhoolu['Last Name']} ` , 
+      phone: bhoolu.Mobile,
+      dateOfbirth: Date(bhoolu['Birth Date']),
+      email: bhoolu.Email,
+      category: 'Yuvak',
+      referanceBhoolku: '645a7b62485cab966ad0aafd',
+      baseMandal: '645fe3a0400e7b6cd192fdba'
+    };
+  });
+};
+
 exports.CalcAge = (DOB) => {
   let monthDiff = Date.now() - DOB.getTime();
   let ageDate = new Date(monthDiff);

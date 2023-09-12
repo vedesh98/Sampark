@@ -10,6 +10,7 @@ const mandalRoutes = require("./api/routes/mandals");
 const sabhRoutes = require("./api/routes/sabha");
 const birthdayBhoolkus = require("./api/routes/birthdayBhoolkus");
 
+//Data base connection
 common.mongooseConnection();
 
 app.use(express.json());

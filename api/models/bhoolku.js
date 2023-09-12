@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 
 const bhoolkuSchema = mongoose.Schema({
-  _id: mongoose.SchemaTypes.ObjectId,
   name: { type: String, required: true },
   phone: { type: String, required: true },
   dateOfbirth: {
     type: Date,
     required: true,
     validate: {
-      validator: ( birthDate ) => birthDate < Date.now(),
-      message: ( props ) => "Please enter valid date",
+      validator: (birthDate) => birthDate < Date.now(),
+      message: (props) => "Please enter valid date",
     },
   },
   age: {
@@ -21,6 +20,10 @@ const bhoolkuSchema = mongoose.Schema({
     type: String,
     enum: ["Balyuvak", "Yuvak", "Yuvati", "Balika"],
     require: true,
+  },
+  bloodgroup: {
+    type: String,
+    enum: ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-", "N/A"],
   },
   baseMandal: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -42,26 +45,17 @@ const bhoolkuSchema = mongoose.Schema({
     ref: "Bhoolku",
     required: false,
   },
-  createdAt: { type: Date, default: () => Date.now(), immutable: true },
   createdBy: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
     immutable: true,
   },
-  changedAt: { type: Date, default: () => Date.now() },
   changedBy: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
-  },
-});
+  }
+},  { timestamps: true, });
 
-// bhoolkuSchema.virtual("age").get(function () {
-//   let monthDiff = Date.now() - this.dateOfbirth.getTime();
-//   let ageDate = new Date(monthDiff);
-//   let year = ageDate.getUTCFullYear();
-//   console.log(year);
-//   return Math.abs(year - 1970);
-// });
 
 bhoolkuSchema.static.calcage = function (Bhoolku) {
   let monthDiff = Date.now() - Bhoolku.dateOfbirth.getTime();

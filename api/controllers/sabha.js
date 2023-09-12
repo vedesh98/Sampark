@@ -6,7 +6,7 @@ exports.sabha_get = async (request, response, next) => {
     const fetchSabha = await Sabha.find(request.query);
     response.status(200).send(fetchSabha);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -23,7 +23,6 @@ exports.sabha_cteate = async (request, response, next) => {
       response.status(500).send(fetchSabha);
     } else {
       const creatSabha = await Sabha.create({
-        _id: new mongoose.Types.ObjectId(),
         mandal: request.body.mandal,
         mandalName: request.body.mandalName,
         category: request.body.category,
@@ -34,7 +33,7 @@ exports.sabha_cteate = async (request, response, next) => {
       response.status(201).send(creatSabha);
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -44,7 +43,7 @@ exports.sabha_get_single = async (request, response, next) => {
     const fetchSabha = await Sabha.findById(sabhaId);
     response.status(200).send(fetchSabha);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -58,7 +57,7 @@ exports.sabha_update = async (request, response, next) => {
     );
     response.status(200).send(updatesabha);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -78,6 +77,6 @@ exports.sabha_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };

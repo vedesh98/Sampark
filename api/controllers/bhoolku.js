@@ -1,5 +1,6 @@
 const Bhoolku = require("../models/bhoolku");
 const mongoose = require("mongoose");
+const common = require("../../common");
 
 exports.bhoolku_get_all = async (request, response, next) => {
   try {
@@ -11,7 +12,7 @@ exports.bhoolku_get_all = async (request, response, next) => {
     });
     response.send(responseponse);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -25,7 +26,6 @@ exports.bhoolku_create = async (request, response, next) => {
       response.status(400).send(fetchBhoolku);
     } else {
       const createdbhoolku = await Bhoolku.create({
-        _id: new mongoose.Types.ObjectId(),
         name: request.body.name,
         phone: request.body.phone,
         dateOfbirth: request.body.dateOfbirth,
@@ -38,7 +38,7 @@ exports.bhoolku_create = async (request, response, next) => {
       response.status(201).send(createdbhoolku);
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -50,7 +50,7 @@ exports.bhoolku_get_bhoolku = async (request, response, next) => {
     );
     response.status(200).send(fetchBhoolku);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -65,7 +65,7 @@ exports.bhoolku_update = async (request, response, next) => {
 
     response.status(200).send(updateBhoolku);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -85,6 +85,46 @@ exports.bhoolku_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
+};
+
+
+// This method is for mass creation of bhoolkus from excel
+exports.bhoolku_create_mass = async (request, response, next) => {
+  let error_a = [];
+  let success_a = [];
+  let allArr = common.readDataFromFile();
+  console.log(allArr);
+  for (let arr of allArr) {
+    try {
+      const fetchBhoolku = await Bhoolku.find({
+        // name: request.body.name,
+        phone: arr.phone,
+      });
+      if (fetchBhoolku.length > 0) {
+        // response.status(400).send(fetchBhoolku);
+        continue;
+      } else {
+        const createdbhoolku = await Bhoolku.create({
+          name: arr.name,
+          phone: arr.phone,
+          dateOfbirth: Date(arr.dateOfbirth),
+          email: arr.email,
+          category: arr.category,
+          baseMandal: "645fe3a0400e7b6cd192fdba",
+          referanceBhoolku: arr.referanceBhoolku,
+          createdBy: request.userData.userId,
+        });
+
+        success_a.push(createdbhoolku);
+      }
+    } catch (error) {
+      error_a.push(error);
+    }
+  }
+  response.status(500).send({
+    success: success_a,
+    errors: error_a,
+  });
 };

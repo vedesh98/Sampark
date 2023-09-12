@@ -6,7 +6,7 @@ exports.Mandal_get_all = async (request, response, next) => {
     const fetchMandal = await Mandal.find(request.query, { _name: 1 });
     response.send(fetchMandal);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -17,7 +17,6 @@ exports.Mandal_create = async (request, response, next) => {
       response.status(500).send(fetchedMandal);
     } else {
       const createMandal = await Mandal.create({
-        _id: new mongoose.Types.ObjectId(),
         name: request.body.name,
         createdBy: request.userData.userId,
       });
@@ -25,7 +24,7 @@ exports.Mandal_create = async (request, response, next) => {
       response.status(201).send(createMandal);
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -35,7 +34,7 @@ exports.Mandal_get = async (request, res, next) => {
     const fetchmandal = await Mandal.findById(mandalId);
     res.status(200).send(fetchmandal);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -49,7 +48,7 @@ exports.Mandal_update = async (request, response, next) => {
     );
     response.status(200).send(updatemandal);
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -69,6 +68,6 @@ exports.Mandal_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };

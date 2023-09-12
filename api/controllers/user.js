@@ -10,26 +10,27 @@ exports.Users_signup = async (request, response, next) => {
     );
     if (fetchUser.length >= 1) {
       response.status(409).send(fetchUser);
-    } else {
-      bcrypt.hash(request.body.password, 10, async (error, hash) => {
-        if (error) {
-          response.status(500).send({
-            error: error,
-          });
-        } else {
-          const userCreated = await User.create({
-            _id: new mongoose.Types.ObjectId(),
-            email: request.body.email,
-            userBhoolku: request.body.userBhoolku,
-            accessLevel: request.body.accessLevel,
-            password: hash,
-          });
-          response.status(500).send(userCreated);
-        }
-      });
+      return;
     }
+    bcrypt.hash(request.body.password, 10, async (error, hash) => {
+      if (error) {
+        response.status(500).send({
+          error: error,
+        });
+        return;
+      }
+      const userCreated = await User.create({
+        email: request.body.email,
+        userBhoolku: request.body.userBhoolku,
+        accessLevel: request.body.accessLevel,
+        password: hash,
+      });
+      response.status(500).send(userCreated);
+
+    });
+
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -41,39 +42,41 @@ exports.User_login = async (request, response, next) => {
         error: true,
         message: `Auth failed`,
       });
-    } else {
-      bcrypt.compare(
-        request.body.password,
-        fetchuser.password,
-        async (error, compareResponse) => {
-          if (error) {
-            response.status(500).send({
-              error: true,
-              message: `Auth failed`,
-            });
-          }
-          if (compareResponse) {
-            const token = jwt.sign(
-              {
-                email: fetchuser.email,
-                userId: fetchuser._id,
-              },
-              process.env.JWT_KEY,
-              {
-                expiresIn: "24hr",
-              }
-            );
-            response.status(200).send({
-              error: false,
-              message: `Auth Successful`,
-              token: token,
-            });
-          }
-        }
-      );
+      return;
     }
+    bcrypt.compare(
+      request.body.password,
+      fetchuser.password,
+      async (error, compareResponse) => {
+        if (error) {
+          response.status(500).send({
+            error: true,
+            message: `Auth failed`,
+          });
+          return;
+        }
+        if (compareResponse) {
+          const token = jwt.sign(
+            {
+              email: fetchuser.email,
+              userId: fetchuser._id,
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "24hr",
+            }
+          );
+          response.status(200).send({
+            error: false,
+            message: `Auth Successful`,
+            token: token,
+          });
+        }
+      }
+    );
+
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
 
@@ -93,6 +96,6 @@ exports.User_delete = async (request, response, next) => {
       });
     }
   } catch (error) {
-    throw error;
+    next(error)
   }
 };
