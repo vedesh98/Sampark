@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
 const Mandal = require("../models/mandal");
+const common = require("../../common");
 
 exports.Mandal_get_all = async (request, response, next) => {
   try {
@@ -59,12 +59,14 @@ exports.Mandal_delete = async (request, response, next) => {
     if (isDeleted) {
       response.status(200).send({
         error: false,
-        message: `Mandal with ${mandalId} deleted successfully.`,
+        message: common.ErrorMessage('006', mandalId)
+        // `Mandal with ID ${mandalId} deleted successfully.`,
       });
     } else {
       response.status(404).send({
         error: false,
-        message: `Mandal with ID ${mandalId} not found.`,
+        message: common.ErrorMessage('007', mandalId)
+        // `Mandal with ID ${mandalId} not found.`,
       });
     }
   } catch (error) {

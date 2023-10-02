@@ -1,5 +1,4 @@
 const Bhoolku = require("../models/bhoolku");
-const mongoose = require("mongoose");
 const common = require("../../common");
 
 exports.GET_BIRTHDAY_LIST_DAY = async (request, response, next) => {

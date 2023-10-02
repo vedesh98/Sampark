@@ -3,7 +3,6 @@ const fs = require("fs");
 
 exports.mongooseConnection = () => {
   const url = process.env.URL;
-  // const url = 'mongodb://localhost:3000/' ;
   mongoose.connect(url);
 };
 
@@ -25,8 +24,8 @@ exports.readDataFromFile = (fileName = 'members.xls') => {
   let sheet_name_list = workbook.SheetNames;
   let xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
   return xlData.map((bhoolu) => {
-    return {  
-      name: `${bhoolu['First Name']} ${bhoolu['Last Name']} ` , 
+    return {
+      name: `${bhoolu['First Name']} ${bhoolu['Last Name']} `,
       phone: bhoolu.Mobile,
       dateOfbirth: Date(bhoolu['Birth Date']),
       email: bhoolu.Email,
@@ -58,3 +57,23 @@ exports.ErrorMessageHandller = (error, request, response, next) => {
     },
   });
 };
+
+// This will returns errormessage by passing error no. 
+exports.ErrorMessage = (errorNo, errVar1, errVar2, errVar3, errVar4) => {
+  const Messages = {
+    '001': 'Not found',
+    '002': `Please select valid sabha.`,
+    '003': `Auth failed`,
+    '004': `Bhoolku with ID ${errVar1} deleted successfully.`,
+    '005': `Bhoolku with ID ${errVar1} not found.`,
+    '006': `Mandal with ID ${errVar1} deleted successfully.`,
+    '007': `Mandal with ID ${errVar1} not found.`,
+    '008': `Sabha with ID ${errVar1} deleted successfully.`,
+    '009': `Sabha with ID ${errVar1} not found.`,
+    '010': `Auth Successful`,
+    '011': `User with ID ${errVar1} deleted successfully.`,
+    '012': `User with ID ${errVar1} not found.`,
+    '013': `please provide valid token to access this`
+  }
+  return Messages[errorNo];
+}

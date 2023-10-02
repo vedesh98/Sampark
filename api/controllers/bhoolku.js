@@ -1,5 +1,4 @@
 const Bhoolku = require("../models/bhoolku");
-const mongoose = require("mongoose");
 const common = require("../../common");
 
 exports.bhoolku_get_all = async (request, response, next) => {
@@ -76,12 +75,14 @@ exports.bhoolku_delete = async (request, response, next) => {
     if (isDeleted) {
       response.status(200).send({
         error: false,
-        message: `Bhoolku with ID ${bhoolkuId} deleted successfully.`,
+        message: common.ErrorMessage('004', bhoolkuId),
+        //`Bhoolku with ID ${bhoolkuId} deleted successfully.`
       });
     } else {
       response.status(404).send({
         error: true,
-        message: `Bhoolku with ID ${bhoolkuId} not found.`,
+        message: common.ErrorMessage('005', bhoolkuId),
+        // `Bhoolku with ID ${bhoolkuId} not found.`,
       });
     }
   } catch (error) {

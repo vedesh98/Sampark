@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
+const common = require("../../common");
 
 exports.Users_signup = async (request, response, next) => {
   try {
@@ -40,7 +40,8 @@ exports.User_login = async (request, response, next) => {
     if (!fetchuser) {
       response.status(401).send({
         error: true,
-        message: `Auth failed`,
+        message: common.ErrorMessage('003')
+        // `Auth failed`,
       });
       return;
     }
@@ -51,7 +52,8 @@ exports.User_login = async (request, response, next) => {
         if (error) {
           response.status(500).send({
             error: true,
-            message: `Auth failed`,
+            message: common.ErrorMessage('003')
+            // `Auth failed`,
           });
           return;
         }
@@ -68,7 +70,8 @@ exports.User_login = async (request, response, next) => {
           );
           response.status(200).send({
             error: false,
-            message: `Auth Successful`,
+            message: common.ErrorMessage('010'),
+            // `Auth Successful`,
             token: token,
           });
         }
@@ -87,12 +90,14 @@ exports.User_delete = async (request, response, next) => {
     if (isDeleted) {
       response.status(200).send({
         error: false,
-        message: `User with ID ${userId} deleted successfully.`,
+        message: common.ErrorMessage('011', userId),
+        // `User with ID ${userId} deleted successfully.`,
       });
     } else {
       response.status(404).send({
         error: true,
-        message: `User with ID ${userId} not found.`,
+        message: common.ErrorMessage('012', userId),
+        // `User with ID ${userId} not found.`,
       });
     }
   } catch (error) {

@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
 const Sabha = require("../models/sabha");
+const common = require("../../common");
+
 
 exports.sabha_get = async (request, response, next) => {
   try {
@@ -68,12 +69,14 @@ exports.sabha_delete = async (request, response, next) => {
     if (isDeleted) {
       response.status(200).send({
         error: false,
-        message: `Sabha with ${sabhaId} deleted successfully.`,
+        message: common.ErrorMessage('008', sabhaId),
+        //`Sabha with ID ${sabhaId} deleted successfully.`,
       });
     } else {
       response.status(200).send({
         error: true,
-        message: `Sabha with ${sabhaId} not found.`,
+        message: common.ErrorMessage('009', sabhaId),
+        //`Sabha with ID ${sabhaId} not found.`,
       });
     }
   } catch (error) {

@@ -1,3 +1,4 @@
+"use strict"
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
@@ -15,6 +16,6 @@ const userSchema = mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
   },
-},  { timestamps: true, });
+}, { timestamps: true, });
 
 module.exports = mongoose.model("User", userSchema);
