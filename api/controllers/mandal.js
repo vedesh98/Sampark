@@ -3,7 +3,7 @@ const common = require("../../common");
 
 exports.Mandal_get_all = async (request, response, next) => {
   try {
-    const fetchMandal = await Mandal.find(request.query, { _name: 1 });
+    const fetchMandal = await Mandal.find(request.query, { name: 1 });
     response.send(fetchMandal);
   } catch (error) {
     next(error)
