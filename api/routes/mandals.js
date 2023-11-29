@@ -5,7 +5,7 @@ const Mandal = require("../models/mandal");
 
 const checkAuth = require("../middleware/check-auth");
 const MandalController = require("../controllers/mandal");
-router.get("/", checkAuth, MandalController.Mandal_get_all);
+router.get("/",  MandalController.Mandal_get_all);
 
 router.post("/", checkAuth, MandalController.Mandal_create);
 

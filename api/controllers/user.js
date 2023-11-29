@@ -12,11 +12,14 @@ exports.Users_signup = async (request, response, next) => {
       response.status(409).send(fetchUser);
       return;
     }
+    console.log(request.body.email);
+    console.log(request.body.password);
     bcrypt.hash(request.body.password, 10, async (error, hash) => {
       if (error) {
         response.status(500).send({
           error: error,
         });
+        console.log(error);
         return;
       }
       const userCreated = await User.create({
@@ -25,7 +28,7 @@ exports.Users_signup = async (request, response, next) => {
         accessLevel: request.body.accessLevel,
         password: hash,
       });
-      response.status(500).send(userCreated);
+      response.status(200).send(userCreated);
 
     });
 
@@ -73,6 +76,8 @@ exports.User_login = async (request, response, next) => {
             message: common.ErrorMessage('010'),
             // `Auth Successful`,
             token: token,
+            email: fetchuser.email,
+            userId: fetchuser._id,
           });
         }
       }

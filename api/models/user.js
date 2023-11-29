@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema({
-  userBhoolku: { type: mongoose.SchemaTypes.ObjectId, required: true },
+  userBhoolku: { type: mongoose.SchemaTypes.ObjectId },// required: true },
   accessLevel: { type: ["mandal", "sabha"], require: false },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
