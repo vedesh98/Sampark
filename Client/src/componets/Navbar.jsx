@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 
 export const Navbar = () => {
+  const islogin = false;
   return (
     <>
       <header>
-        {" "}
         <div className="container">
           <div className="logo-brand">
             <NavLint to="/"></NavLint>
@@ -24,12 +24,17 @@ export const Navbar = () => {
                 <NavLink to="/">Home</NavLink>
               </li>
 
-              <li>
-                <NavLink to="/login">Login</NavLink>
-              </li>
-              <li>
-                <NavLink to="/register">Register</NavLink>
-              </li>
+              {islogin && (
+                <>
+                  {" "}
+                  <li>
+                    <NavLink to="/login">Login</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/register">Register</NavLink>
+                  </li>{" "}
+                </>
+              )}
             </ul>
           </nav>
         </div>

@@ -12,8 +12,7 @@ exports.Users_signup = async (request, response, next) => {
       response.status(409).send(fetchUser);
       return;
     }
-    console.log(request.body.email);
-    console.log(request.body.password);
+    
     bcrypt.hash(request.body.password, 10, async (error, hash) => {
       if (error) {
         response.status(500).send({
@@ -68,7 +67,7 @@ exports.User_login = async (request, response, next) => {
             },
             process.env.JWT_KEY,
             {
-              expiresIn: "24hr",
+              expiresIn: "24d",
             }
           );
           response.status(200).send({
